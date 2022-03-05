@@ -46,14 +46,15 @@ BBIO_err initialize_adc(void)
     char test_path[140];
 #endif
     FILE *fh;
-    BBIO_err err;
+    BBIO_err err = BBIO_OK;
 
     if (adc_initialized) {
         return BBIO_OK;
     }
 
 #ifdef BBBVERSION41
-    err = load_device_tree("BB-ADC");
+    // newer am335x kernels no longer support capemgr
+    // err = load_device_tree("BB-ADC");
     if (err == BBIO_OK) {
         strncat(adc_prefix_dir, "/sys/bus/iio/devices/iio:device0/in_voltage", sizeof(adc_prefix_dir));
         snprintf(test_path, sizeof(test_path), "%s%d_raw", adc_prefix_dir, 1);
